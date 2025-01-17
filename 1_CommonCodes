@@ -1,1 +1,31 @@
+/*remove a value from an array without using remove function*/
 
+a!localVariables(
+  local!a: { 2, 5, 12, 67, 123, 9, 8, 7, 41 },
+  local!b: index(
+    local!a,
+    wherecontains(ri!removeValues, local!a),
+    null
+  ),
+  difference(local!a, local!b)
+
+/*Print the values from array one ,those values not in array 2 without using difference*/
+
+/*Method1:*/
+
+a!localVariables(
+  local!a: { 2, 5, 12, 67, 123, 9, 8, 7, 41 },
+  local!b: { 2, 5, 12, 67, 123, 21, 34, 56, 32, 11 },
+  a!forEach(
+    items: local!a,
+    expression: if(contains(local!b, fv!item), {}, fv!item)
+  )
+)
+
+/*Method2:*/
+
+a!localVariables(
+  local!a: { 2, 5, 12, 67, 123, 9, 8, 7, 41 },
+  local!b: { 2, 5, 12, 67, 123, 21, 34, 56, 32, 11 },
+  remove(local!a, wherecontains(local!a, local!b))
+),
