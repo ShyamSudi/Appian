@@ -1,4 +1,4 @@
-/*remove a value from an array without using remove function*/
+1./*remove a value from an array without using remove function*/
 
 a!localVariables(
   local!a: { 2, 5, 12, 67, 123, 9, 8, 7, 41 },
@@ -9,7 +9,7 @@ a!localVariables(
   ),
   difference(local!a, local!b)
 
-/*Print the values from array one ,those values not in array 2 without using difference*/
+2./*Print the values from array one ,those values not in array 2 without using difference*/
 
 /*Method1:*/
 
@@ -29,3 +29,113 @@ a!localVariables(
   local!b: { 2, 5, 12, 67, 123, 21, 34, 56, 32, 11 },
   remove(local!a, wherecontains(local!a, local!b))
 ),
+
+3./*Convert the sentence into a proper format without using proper*/
+
+a!localVariables(
+  local!arrayOfLetters: code(ri!word),
+  local!firstLetter: index(local!arrayOfLetters, 1, null) - 32,
+  joinarray(
+    a!update(
+      char(code(ri!word)),
+      1,
+      char(local!firstLetter)
+    )
+  )
+)
+
+4./*Sort the given integer array without using sort and sortIntegerArray plugin*/
+
+a!localVariables(
+  local!array: { 4, 2, 4, 12, 56, 2, 45 },
+  local!dataArray: a!forEach(
+    items: local!array,
+    expression: { value: fv!item }
+  ),
+  tointeger(
+    todatasubset(
+      arrayToPage: local!dataArray,
+      pagingConfiguration: a!pagingInfo(
+        startIndex: 1,
+        batchSize: length(local!array),
+        sort: a!sortInfo(field: "value", ascending: true())
+      )
+    ).data.value
+  )
+)
+5./*Convert the given string to UPPER and LOWER without using UPPER and LOWER functions*/
+a!localVariables(
+  local!data: "appian",
+  local!arrayData: code(local!data),
+  a!forEach(
+    items: local!arrayData,
+    expression: char(fv!item - 32)
+  )
+)a!localVariables(
+  local!data: "APPIAN",
+  local!arrayData: code(local!data),
+  a!forEach(
+    items: local!arrayData,
+    expression: char(fv!item + 32)
+  )
+)
+
+6./*Print Max and Min values from array without using Max and Min functions*/
+
+Method 1:
+
+a!localVariables(
+  local!integerArray: { 23, 4, 10, 676, 32, 11, 90, 12 },
+  local!array: a!forEach(
+    items: local!integerArray,
+    expression: { Number: fv!item }
+  ),
+  local!ascArray: todatasubset(
+    arrayToPage: local!array,
+    pagingConfiguration: a!pagingInfo(
+      startIndex: 1,
+      batchSize: - 1,
+      sort: a!sortInfo(field: "Number", ascending: true())
+    )
+  ),
+  index(
+    local!ascArray.data.Number,
+    {
+      local!ascArray.startIndex,
+      local!ascArray.totalCount
+    },
+    {}
+  )
+)
+
+7./*Reverse the sentence without using reverse function*/
+
+a!localVariables(
+  local!data: "Welcome to Appian",
+  local!arrayOfData: split(local!data, " "),
+  a!forEach(
+    items: local!arrayOfData,
+    expression: index(
+      local!arrayOfData,
+      length(local!arrayOfData) - fv!index + 1,
+      {}
+    )
+  )
+)
+
+8./*Reverse the string without using reverse function*/
+
+a!localVariables(
+  local!data: "Appian",
+  local!arrayOfData: char(code(local!data)),
+  joinarray(
+    a!forEach(
+      items: local!arrayOfData,
+      expression: index(
+        local!arrayOfData,
+        length(local!arrayOfData) - fv!index + 1,
+        {}
+      )
+    )
+  )
+)
